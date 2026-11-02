@@ -1,0 +1,21 @@
+from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from .models import User
+
+
+class UserAdmin(BaseUserAdmin):
+    model = User
+    list_display = ("email", "name", "location", "is_staff", "date_joined")
+    ordering = ("-date_joined",)
+    fieldsets = (
+        (None, {"fields": ("email", "password")}),
+        ("Personal info", {"fields": ("name", "location")}),
+        ("Permissions", {"fields": ("is_active", "is_staff", "is_superuser", "groups", "user_permissions")}),
+    )
+    add_fieldsets = (
+        (None, {"classes": ("wide",), "fields": ("email", "name", "password1", "password2")}),
+    )
+    search_fields = ("email", "name")
+
+
+admin.site.register(User, UserAdmin)
